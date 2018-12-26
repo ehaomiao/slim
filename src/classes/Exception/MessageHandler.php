@@ -10,6 +10,8 @@
 
 namespace Haomiao\Slim\Exception;
 
+use Haomiao\Slim\DataObject;
+
 /**
  * Handler for runtime error.
  * 
