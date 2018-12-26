@@ -10,6 +10,8 @@
 
 namespace Haomiao\Slim\Exception;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Handler for 400.
  * 
