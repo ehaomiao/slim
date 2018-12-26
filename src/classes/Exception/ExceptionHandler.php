@@ -44,7 +44,7 @@ class ExceptionHandler extends Handler
     public function __init()
     {
         $this->registerRenderers([
-            static::CONTENT_TYPE_HTML => ServerExceptionHtmlRenderer::class
+            static::CONTENT_TYPE_HTML => ExceptionHtmlRenderer::class
         ]);
     }
 
