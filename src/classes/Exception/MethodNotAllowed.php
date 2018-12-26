@@ -10,6 +10,9 @@
 
 namespace Haomiao\Slim\Exception;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * 405.
  * 
@@ -30,18 +33,19 @@ class MethodNotAllowed extends BadRequest
      *
      * @param string[] $allowedMethods
      * @param mixed $previous
-     * @param array $context
      */
     public function __construct(
-        array $allowedMethods,
-        array $context = []
+        array $allowedMethods, 
+        ServerRequestInterface $request, 
+        ResponseInterface $response
     ) {
         $this->allowedMethods = $allowedMethods;
+
         parent::__construct(
-            'Method not allowed. Must be one of: ' . implode(', ', $allowedMethods),
-            -405,
-            null,
-            $context
+            'Method not allowed. Must be one of: ' . implode(', ', $allowedMethods), 
+            -405, 
+            $request, 
+            $response
         );
     }
 

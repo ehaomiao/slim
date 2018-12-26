@@ -31,27 +31,35 @@ class Message extends \RuntimeException
      * @param string $message
      * @param mixed $code
      * @param mixed $previous
-     * @param array $context
+     * @param array $data
      */
     public function __construct(
         string $message,
         $code = null,
         $previous = null,
-        array $context = []
+        array $data = []
     ) {
-        list($code, $previous, $context) = $this->parseArgs($code, $previous, $context);
+        $this->setRequestAndResponse(func_get_args());
 
-        if (isset($context['request'])) {
-            $this->request = $context['request'];
+        if (!is_int($code)) {
+            if (!$code instanceof \Throwable) {
+                $data = $code;
+            } else {
+                $previous = $code;
+            }
+            $code = $this->getDefaultCode();
         }
 
-        if (isset($context['response'])) {
-            $this->response = $context['response'];
+        if (!$previous instanceof \Throwable) {
+            $data = $previous;
+            $previous = null;
         }
 
-        if (isset($context['data'])) {
-            $this->data = $context['data'];
+        if (!is_array($data)) {
+            $data = [];
         }
+
+        $this->data = $data;
 
         parent::__construct($message, $code, $previous);
     }

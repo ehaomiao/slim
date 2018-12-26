@@ -29,13 +29,32 @@ class NotFoundHandler extends BadRequestHandler
     public function __init()
     {
         $this->registerRenderers([
-            static::CONTENT_TYPE_HTML => function ($request, &$response) {
+            static::CONTENT_TYPE_HTML => function($request, &$response) {
                 $renderer = new NotFoundHtmlRenderer();
                 $renderer->setHomeUrl((string)($request->getUri()->withPath('')->withQuery('')->withFragment('')));
                 $response = $renderer->process(new DataObject($this->getRendererContext($response)));
                 return $renderer->getOutput();
             }
         ]);
+    }
+
+    /**
+     * Create message
+     *
+     * @return array
+     */
+    protected function getContentOfHandler()
+    {
+        $error = [
+            'code' => $this->thrown->getCode(),
+            'message' => $this->thrown->getMessage(),
+            'data' => [
+                'host' => $this->request->getUri()->getHost(),
+                'path' => $this->request->getUri()->getPath()
+            ]
+        ];
+
+        return new DataObject($error);
     }
 
     /**

@@ -10,6 +10,9 @@
 
 namespace Haomiao\Slim\Exception;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * 404.
  * 
@@ -20,12 +23,10 @@ class NotFound extends BadRequest
 {
     /**
      * __construct
-     *
-     * @param array $context
      */
-    public function __construct(array $context = [])
-    {
-        parent::__construct('Not found', -404, null, $context);
+    public function __construct(ServerRequestInterface $request, ResponseInterface $response) 
+    {        
+        parent::__construct('Not found', -404, $request, $response);
     }
 
 }

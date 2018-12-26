@@ -14,7 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Exception with context.
+ * Exception with request response.
  * 
  * @package Sinpe\Framework
  * @since   1.0.0
@@ -41,55 +41,50 @@ trait AllTrait
      * @param string $message
      * @param mixed $code
      * @param mixed $previous
-     * @param array $context
+     * @param array $data
      */
     public function __construct(
-        string $message,
-        $code = null,
-        $previous = null,
-        array $context = []
+        string $message, 
+        $code=null, 
+        $previous=null
     ) {
-        list($code, $previous, $context) = $this->parseArgs($code, $previous, $context);
+        $this->setRequestAndResponse(func_get_args());
 
-        if (isset($context['request'])) {
-            $this->request = $context['request'];
-        }
-
-        if (isset($context['response'])) {
-            $this->response = $context['response'];
-        }
-
-        parent::__construct($message, $code, $previous);
-    }
-
-    /**
-     * Parse arguments.
-     *
-     * @param mixed $code
-     * @param mixed $previous
-     * @param array $context
-     */
-    protected function parseArgs($code = null, $previous = null, array $context = [])
-    {
         if (!is_int($code)) {
             if (!$code instanceof \Throwable) {
-                $context = $code;
+                $data = $code;
             } else {
                 $previous = $code;
             }
             $code = $this->getDefaultCode();
         }
 
-        if (!$previous instanceof \Throwable) {
-            $context = $previous;
-            $previous = null;
+        parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * Set request and response
+     *
+     * @param [type] $args
+     * @return void
+     */
+    protected function setRequestAndResponse($args)
+    {
+        $r = array_pop($args);
+
+        if ($r instanceof ResponseInterface) {
+            $this->response = $r;
+        } elseif ($r instanceof ServerRequestInterface) {
+            $this->request = $r;
         }
 
-        if (!is_array($context)) {
-            $context = [];
-        }
+        $r = array_pop($args);
 
-        return [$code, $previous, $context];
+        if ($r instanceof ServerRequestInterface) {
+            $this->request = $r;
+        } elseif ($r instanceof ResponseInterface) {
+            $this->response = $r;
+        }
     }
 
     /**

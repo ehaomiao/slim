@@ -20,12 +20,10 @@ class ClientUnauthorizedException extends BadRequest
 {
     /**
      * __construct
-     *
-     * @param array $context
      */
-    public function __construct(array $context = [])
+    public function __construct() 
     {
-        parent::__construct('Unauthorized', -401, null, $context);
+        parent::__construct('Unauthorized', -401);
     }
 
 }
