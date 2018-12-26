@@ -37,7 +37,7 @@ class Message extends \RuntimeException
         string $message,
         $code = null,
         $previous = null,
-        array $data = []
+        $data = []
     ) {
         $this->setRequestAndResponse(func_get_args());
 
