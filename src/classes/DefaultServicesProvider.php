@@ -26,8 +26,8 @@ use Slim\Interfaces\RouterInterface;
 use Slim\Router;
 
 use Haomiao\Slim\Route\ArgsNamed;
-use Haomiao\Slim\Exception\ClientMethodNotAllowedExceptionHandler;
-use Haomiao\Slim\Exception\ClientRouteNotFoundExceptionHandler;
+use Haomiao\Slim\Exception\MethodNotAllowedHandler;
+use Haomiao\Slim\Exception\NotFoundHandler;
 
 /**
  * Slim's default Service Provider.
@@ -213,7 +213,7 @@ class DefaultServicesProvider
         //      *
         //      * @return callable
         //      */
-        //     $handler = $container->make(ClientRouteNotFoundExceptionHandler::class);
+        //     $handler = $container->make(NotFoundHandler::class);
 
         //     $container->instance('notFoundHandler', $handler);
         // }
@@ -232,7 +232,7 @@ class DefaultServicesProvider
         //      *
         //      * @return callable
         //      */
-        //     $handler = $container->make(ClientMethodNotAllowedExceptionHandler::class);
+        //     $handler = $container->make(MethodNotAllowedHandler::class);
 
         //     $container->instance('notAllowedHandler', $handler);
         // }

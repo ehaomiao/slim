@@ -18,10 +18,9 @@ use Slim\Exception\SlimException;
 use Slim\Exception\MethodNotAllowedException;
 use Slim\Exception\NotFoundException;
 
-use Haomiao\Slim\Exception\ClientMethodNotAllowedException;
-use Haomiao\Slim\Exception\ClientRouteNotFoundException;
+use Haomiao\Slim\Exception\MethodNotAllowed;
+use Haomiao\Slim\Exception\NotFound;
 use Haomiao\Slim\Exception\Exception;
-use Haomiao\Slim\Exception\RuntimeException;
 
 /**
  * Application class
@@ -91,28 +90,11 @@ abstract class Application extends \Slim\App
     ) {
         // 转换slim抛出的异常
         if ($e instanceof MethodNotAllowedException) {
-            $e = new ClientMethodNotAllowedException(
-                $e->getAllowedMethods(),
-                [
-                    'request' => $e->getRequest(),
-                    'response' => $e->getResponse()
-                ]
-            );
+            $e = new MethodNotAllowed($e->getAllowedMethods(), $e->getRequest(), $e->getResponse());
         } elseif ($e instanceof NotFoundException) {
-            $e = new ClientRouteNotFoundException(
-                [
-                    'request' => $e->getRequest(),
-                    'response' => $e->getResponse()
-                ]
-            );
+            $e = new NotFound($e->getRequest(), $e->getResponse());
         } elseif ($e instanceof SlimException) {
-            $e = new RuntimeException(
-                $e->getMessage(),
-                [
-                    'request' => $e->getRequest(),
-                    'response' => $e->getResponse()
-                ]
-            );
+            $e = new Exception($e->getMessage(), $e->getRequest(), $e->getResponse());
         }
 
         $setting = $this->getContainer()->get('settings');
