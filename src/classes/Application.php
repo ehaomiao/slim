@@ -20,7 +20,8 @@ use Slim\Exception\NotFoundException;
 
 use Haomiao\Slim\Exception\MethodNotAllowed;
 use Haomiao\Slim\Exception\NotFound;
-use Haomiao\Slim\Exception\Exception;
+use Haomiao\Slim\Exception\Exception as HaomiaoException;
+use Haomiao\Slim\Exception\Message as HaomiaoMessage;
 
 /**
  * Application class
@@ -94,7 +95,7 @@ abstract class Application extends \Slim\App
         } elseif ($e instanceof NotFoundException) {
             $e = new NotFound($e->getRequest(), $e->getResponse());
         } elseif ($e instanceof SlimException) {
-            $e = new Exception($e->getMessage(), $e->getRequest(), $e->getResponse());
+            $e = new HaomiaoException($e->getMessage(), $e->getRequest(), $e->getResponse());
         }
 
         $setting = $this->getContainer()->get('settings');
@@ -109,17 +110,14 @@ abstract class Application extends \Slim\App
 
                 $handler->setThrowable($e);
 
-                if (method_exists($e, 'getRequest')) {
-                    $request = $e->getRequest(); // 兼容slim的exception
-                } elseif ($e->request) {
-                    $request = $e->request;
-                }
-                
-                if (method_exists($e, 'getResponse')) {
-                    $response = $e->getResponse(); // 兼容slim的exception
-                } elseif ($e->response) {
-                    $response = $e->response;
-                }
+                if ($e instanceof HaomiaoException || $e instanceof HaomiaoMessage) {
+                    if ($e->request) {
+                        $request = $e->request;
+                    }
+                    if ($e->response) {
+                        $response = $e->response;
+                    }
+                } 
 
                 try {
                     return $handler->handle($request, $response);
