@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
  * @package Sinpe\Framework
  * @since   1.0.0
  */
-abstract class UnauthorizedHandler extends ClientExceptionHandler
+abstract class UnauthorizedHandler extends BadRequestHandler
 {
     /**
      * Handler procedure.

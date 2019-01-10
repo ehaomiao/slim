@@ -16,7 +16,7 @@ namespace Haomiao\Slim\Exception;
  * @package Sinpe\Framework
  * @since   1.0.0
  */
-class ClientUnauthorizedException extends BadRequest
+class Unauthorized extends BadRequest
 {
     /**
      * __construct
