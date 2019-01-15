@@ -214,4 +214,9 @@ class DataObject implements DataObjectInterface
 
         return $value;
     }
+
+    public function __toString()
+    {
+        return json_encode($this->data);
+    }
 }

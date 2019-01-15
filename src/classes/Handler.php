@@ -115,7 +115,7 @@ abstract class Handler implements HandlerInterface
 
         $body->write($output);
 
-        return $response->withHeader('Content-type', $this->determineContentType())
+        return $response->withHeader('Content-Type', $this->determineContentType())
             ->withBody($body);
     }
 
