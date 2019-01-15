@@ -33,7 +33,7 @@ class DataObject implements DataObjectInterface
      */
     public function __construct(array $data = [])
     {
-        $this->data = array_replace_recursive($this->data, $data);
+        $this->data = $data;
     }
 
     /**
