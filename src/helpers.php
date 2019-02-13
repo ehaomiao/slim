@@ -65,7 +65,7 @@ if (!function_exists('studly')) {
      */
     function studly($value)
     {
-        $value = ucwords(str_replace(['-', '_'], ' ', $value));
+        $value = ucwords(str_replace(['-', '_'], ' ', strtolower($value)));
         return str_replace(' ', '', $value);
     }
 }
